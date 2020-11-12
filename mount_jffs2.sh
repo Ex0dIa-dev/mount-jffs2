@@ -24,17 +24,12 @@ then
     exit 1
 fi
 
-if [[ "$3" == "" ]]
-then
-	tsize="$3"
-fi
-
 # cleanup if necessary
 umount /dev/mtdblock0 &>/dev/null
 modprobe -r mtdram &>/dev/null
 modprobe -r mtdblock &>/dev/null
 
-modprobe mtdram total_size=$tsize || exit 1
+modprobe mtdram total_size=$3 || exit 1
 modprobe mtdblock || exit 1
 dd if="$1" of=/dev/mtdblock0 || exit 1
 mount -t jffs2 /dev/mtdblock0 $2 || exit 1
